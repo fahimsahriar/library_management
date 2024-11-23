@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser
 from rest_framework import status
 
+from management.permissions import IsAdminRole, IsMemberRole, IsAdminOrMember
+
 User = get_user_model()
 
 class MemberListView(ListAPIView):
@@ -35,7 +37,7 @@ class UserDetailView(RetrieveAPIView):
 User = get_user_model()
 
 class UnbanUserView(APIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminRole]
 
     def post(self, request, pk):
         """Unban a user."""
