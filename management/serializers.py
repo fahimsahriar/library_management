@@ -14,7 +14,7 @@ class BorrowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Borrow
-        fields = ['book', 'borrow_date', 'return_date', 'deadline', 'fine']
+        fields = ['book', 'user', 'borrow_date', 'return_date', 'deadline', 'fine']
 
 class ReturnBookSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all(), read_only=False)
@@ -39,7 +39,21 @@ class ReturnBookSerializer(serializers.ModelSerializer):
         current_date = now()
         if instance.deadline and current_date > instance.deadline:
             overdue_days = (current_date - instance.deadline).days
-            instance.fine = overdue_days * 5  # Assuming 5 BDT per day
+            fine_amount = overdue_days * 5  # Assuming 5 BDT per day
+            instance.fine = fine_amount
+
+            # Update the user's credit and ban status
+            user = instance.user
+            if fine_amount > 0:
+                if user.credit >= fine_amount:
+                    user.credit -= fine_amount
+                else:
+                    user.credit = 0
+                    user.is_banned = True  # Mark user as banned if credit is exhausted
+
+            # Update user's total fine for record-keeping
+            user.total_fine += fine_amount
+            user.save()
 
         # Mark the return date and update book availability
         instance.return_date = current_date

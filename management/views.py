@@ -6,6 +6,7 @@ from rest_framework.exceptions import ValidationError
 from .permissions import IsAdminRole, IsMemberRole, IsAdminOrMember
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import SAFE_METHODS
+from rest_framework.exceptions import PermissionDenied
 
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
@@ -47,6 +48,10 @@ class BorrowBookView(generics.GenericAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         book = serializer.validated_data['book']
+
+        # Check if user is banned
+        if user.is_banned:
+            raise PermissionDenied("You are banned from borrowing books due to unpaid fines.")
 
         # Check if the user has exceeded the borrow limit
         if Borrow.objects.filter(user=user, return_date__isnull=True).count() >= 5:
