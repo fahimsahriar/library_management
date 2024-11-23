@@ -33,7 +33,7 @@ Members:
 
 ### Prerequisites
 1. Python 3.8+
-2. Django 4+
+2. Django 5+
 3. Django Rest Framework
 
 ### Steps
