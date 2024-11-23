@@ -107,6 +107,7 @@ library_management /
     {
     "message": "Member registered successfully."
     }
+  ```
   Status 400 (Bad Request): If validation fails
   ```json
     {
@@ -114,9 +115,11 @@ library_management /
     }
   ```
 
-###Notes:
-- The admin registration requires the request to be made by a user with an admin role (authenticated superuser).
-- The member registration is open to anyone, without requiring any form of authentication.
+### Notes:
+```text
+    The admin registration requires the request to be made by a user with an admin role (authenticated superuser).
+    The member registration is open to anyone, without requiring any form of authentication.
+```
 
 - Admin User Registration\
   POST ```/api/users/register/admin/```\
@@ -137,6 +140,7 @@ library_management /
     {
     "message": "Admin registered successfully."
     }
+  ```
   Status 400 (Bad Request): If validation fails
   ```json
     {
