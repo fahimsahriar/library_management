@@ -147,7 +147,7 @@ library_management /
 
 ### Users
 - List All Members (Admin Only)\
-  GET ```/api/users/members/```\
+  GET ```/api/users/members/```
 
 - View Member Details (Admin Only)\
   GET ```/api/users/members/<int:pk>/```\
