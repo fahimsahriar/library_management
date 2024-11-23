@@ -62,8 +62,10 @@ Members:
 ```
 5. Create a superuser (Admin/Super User):
 ```bash
-  python manage.py createsuperuser      
+python manage.py createsuperuser      
 ```
+By logging in as a superuser, you can register both member and admin users.
+
 6. Run the development server:
 ```bash
   python manage.py runserver       
@@ -86,6 +88,62 @@ library_management /
 ## API Reference
 
 #### Authentication
+- Member User Registration\
+  POST ```/api/users/register/member/```\
+  Description: This endpoint allows anyone (unauthenticated) to register as a member. No authentication is required for registering as a member.\
+  Authentication Required: No, members can register without authentication.\
+  Permissions: Open to anyone, no authentication required.\
+  Request Body:
+  ```json
+    {
+        "username": "member1",
+        "password": "securepassword",
+        "email": "member1@example.com"
+    }
+  ```
+  Response:\
+  Status 201 (Created): Member registered successfully
+  ```json
+    {
+    "message": "Member registered successfully."
+    }
+  Status 400 (Bad Request): If validation fails
+  ```json
+    {
+    "detail": "Invalid data."
+    }
+  ```
+
+###Notes:
+- The admin registration requires the request to be made by a user with an admin role (authenticated superuser).
+- The member registration is open to anyone, without requiring any form of authentication.
+
+- Admin User Registration\
+  POST ```/api/users/register/admin/```\
+  Description: This endpoint allows a superuser (admin) to register a new admin user. The request must be authenticated with an admin role to create an admin user.\
+  Authentication Required: Yes, only authenticated superusers (admin role) can register a new admin.\
+  Permissions: Only superusers with the admin role.\
+  Request Body:
+  ```json
+    {
+        "username": "member1",
+        "password": "securepassword",
+        "email": "member1@example.com"
+    }
+  ```
+  Response:\
+  Status 201 (Created): Member registered successfully
+  ```json
+    {
+    "message": "Admin registered successfully."
+    }
+  Status 400 (Bad Request): If validation fails
+  ```json
+    {
+    "detail": "Invalid data."
+    }
+  ```
+
 - Login (Obtain Token)\
   POST ```/api/users/login/```\
   Request Body:

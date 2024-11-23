@@ -1,16 +1,45 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from management.models import Borrow
+from .models import CustomUser
 
 User = get_user_model()
+
+class UserRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'password', 'role', 'email']
+        extra_kwargs = {
+            'password': {'write_only': True},
+            'role': {'required': False},  # Default to 'member' if not provided
+        }
+
+    def create(self, validated_data):
+        # Default to member if role is not specified
+        role = validated_data.get('role', 'member')
+
+        # If the role is 'admin', ensure only an authenticated admin can create it
+        request = self.context.get('request')
+        if role == 'admin':
+            if not request or not request.user.is_authenticated:
+                raise serializers.ValidationError("Authentication is required to create an admin user.")
+            if request.user.role != 'admin':
+                raise serializers.ValidationError("Only admins can create other admin users.")
+
+        # Create user and set password
+        user = CustomUser.objects.create(
+            username=validated_data['username'],
+            email=validated_data.get('email'),
+            role=role
+        )
+        user.set_password(validated_data['password'])
+        user.save()
+        return user
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'total_fine', 'credit', 'is_banned']
-
-
-User = get_user_model()
 
 class BorrowSerializer(serializers.ModelSerializer):
     class Meta:
