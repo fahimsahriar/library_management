@@ -1,9 +1,12 @@
 from django.urls import path
-from .views import BorrowBookView, ReturnBookView, BookListCreateView, UserBorrowedBooksView
+from .views import BorrowBookView, ReturnBookView, BookViewSet
 
 urlpatterns = [
-    path('books/', BookListCreateView.as_view(), name='book-list-create'),
+    # Explicitly map actions of the BookViewSet
+    path('books/', BookViewSet.as_view({'get': 'list', 'post': 'create'}), name='book-list-create'),
+    path('books/<int:pk>/', BookViewSet.as_view({'get': 'retrieve', 'put': 'update', 'delete': 'destroy'}), name='book-detail'),
+
+    # Endpoints for borrowing and returning books
     path('borrow/', BorrowBookView.as_view(), name='borrow-book'),
-    path('borrowed/', UserBorrowedBooksView.as_view(), name='user-borrowed-books'),
     path('return/<int:pk>/', ReturnBookView.as_view(), name='return-book'),
 ]
