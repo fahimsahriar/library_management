@@ -11,7 +11,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         fields = ['username', 'password', 'role', 'email']
         extra_kwargs = {
             'password': {'write_only': True},
-            'role': {'required': False},  # Default to 'member' if not provided
+            'role': {'required': False},
         }
 
     def create(self, validated_data):
@@ -38,7 +38,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['id', 'username', 'email', 'total_fine', 'credit', 'is_banned']
 
 class BorrowSerializer(serializers.ModelSerializer):
@@ -51,7 +51,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     borrowing_history = serializers.SerializerMethodField()
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['id', 'username', 'email', 'role', 'total_fine', 'credit', 'is_banned', 'current_borrowed_books', 'borrowing_history']
 
     def get_current_borrowed_books(self, obj):

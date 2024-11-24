@@ -11,10 +11,11 @@ class BookSerializer(serializers.ModelSerializer):
 
 class BorrowSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
+    user = serializers.ReadOnlyField(source='user.id')
 
     class Meta:
         model = Borrow
-        fields = ['book', 'user', 'borrow_date', 'return_date', 'deadline', 'fine']
+        fields = ['id', 'book', 'user', 'borrow_date', 'return_date', 'deadline', 'fine']
 
 class ReturnBookSerializer(serializers.ModelSerializer):
     book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all(), read_only=False)
