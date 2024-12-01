@@ -3,11 +3,12 @@
 
 This is a Django-based backend project that manages a library system. It includes role-based access control with two user roles: Admin and Member.
 
-Admins:
+**Admins:**
 - Perform CRUD operations on books.
 - View a list of all members and their borrowing history.
 - Ban/unban members.
-Members:
+
+**Members:**
 - Borrow and return books.
 - View their borrowed books, total fines, and credit balance.
 
