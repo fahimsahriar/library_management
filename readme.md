@@ -97,22 +97,22 @@ library_management /
   Request Body:
   ```json
     {
-        "username": "member1",
-        "password": "securepassword",
-        "email": "member1@example.com"
+      "username": "member1",
+      "password": "securepassword",
+      "email": "member1@example.com"
     }
   ```
   Response:\
   Status 201 (Created): Member registered successfully
   ```json
     {
-    "message": "Member registered successfully."
+      "message": "Member registered successfully."
     }
   ```
   Status 400 (Bad Request): If validation fails
   ```json
     {
-    "detail": "Invalid data."
+      "detail": "Invalid data."
     }
   ```
 
@@ -130,22 +130,22 @@ library_management /
   Request Body:
   ```json
     {
-        "username": "member1",
-        "password": "securepassword",
-        "email": "member1@example.com"
+      "username": "member1",
+      "password": "securepassword",
+      "email": "member1@example.com"
     }
   ```
   Response:\
   Status 201 (Created): Member registered successfully
   ```json
     {
-    "message": "Admin registered successfully."
+      "message": "Admin registered successfully."
     }
   ```
   Status 400 (Bad Request): If validation fails
   ```json
     {
-    "detail": "Invalid data."
+      "detail": "Invalid data."
     }
   ```
 
@@ -203,9 +203,9 @@ library_management /
   Request Body:
   ```json
   {
-    "book": 1  # ID of the book to borrow
-  }
+    "book": 1
   ```
+  Book should be passed in the request body\
 - Return a Book (Member Only)\
   PUT ```/api/management/return/<int:pk>/```\
   Replace <int:pk> with the Borrow ID.
